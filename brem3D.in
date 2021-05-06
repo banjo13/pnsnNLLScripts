@@ -1,0 +1,206 @@
+# Generic control file statements
+# =============================================================================
+# =============================================================================
+CONTROL 3  54321
+#CONTROL 1  54321
+TRANS SIMPLE 41.798 -125.010 0.0
+# =============================================================================
+# END of Generic control file statements
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# Vel2Grid control file statements
+# =============================================================================
+VGOUT model/test3D
+#VGOUT model/test1D
+#VGTYPE P
+VGTYPE S
+### xNum:555 yNum:1556 zNum:101
+### dx:0.50 dy:0.50 dz:0.50
+#VGGRID  2 1556 201    0.0  0.0   -3.0   0.50 0.50 0.50   SLOW_LEN
+VGGRID  555 1642 201    0.0  0.0   -3.0   0.50 0.50 0.50   SLOW_LEN
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+LAYER   0.0  5.40 0.00    3.03  0.00 2.60 0.00
+LAYER   4.0  6.38 0.00    3.58  0.00 2.80 0.00
+LAYER   9.0  6.59 0.00    3.70  0.00 2.86 0.00
+LAYER  16.0  6.73 0.00    3.78  0.00 2.89 0.00
+LAYER  20.0  6.86 0.00    3.85  0.00 2.93 0.00
+LAYER  25.0  6.95 0.00    3.90  0.00 2.95 0.00
+LAYER  41.0  7.80 0.00    4.38  0.00 3.22 0.00
+# -----------------------------------------------------------------------------
+2DTO3DTRANS 41.798 -125.010 0.0
+# =============================================================================
+# END of Vel2Grid control file statements
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# Grid2Time control file statements
+# =============================================================================
+#GTFILES ./model/test1D ./time/test1D P
+#GTFILES ./model/test1D ./time/test1D S
+#GTFILES ./model/test3D /Volumes/huge/time/test3D P
+#GTFILES ./model/cvmF /Volumes/huge/time/cvm P
+GTFILES ./model/cvmF /Volumes/huge/time/cvm S
+
+#GTFILES  /model  ./time mod1d S
+GTMODE GRID3D ANGLES_YES
+#GTMODE GRID2D ANGLES_YES
+# =============================================================================
+# =============================================================================
+#INCLUDE /Users/banjo/Projects/nll_pnsn/bremerton/bremUp_GTSRCE.list
+INCLUDE /Users/banjo/Projects/nll_pnsn/bremerton/bremUp_GTSRCE1.list #for adding stations not in the 3d tt grids
+# =============================================================================
+# =============================================================================
+GT_PLFD  1.0e-3  0
+# =============================================================================
+# END of Grid2Time control file statements
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# NLLoc control file statements
+# =============================================================================
+LOCSIG Barrett Johnson UW PNSN
+# =============================================================================
+# =============================================================================
+# ========================================================================
+LOCCOM Bremerton Updated 1D Location
+#LOCCOM Oregon 80-89
+#LOCCOM Oregon 90-99
+#LOCCOM Oregon 00-09
+#LOCCOM Oregon 10-19
+#LOCCOM Oregon 20-21
+# =============================================================================
+# =============================================================================
+# ========================================================================
+## phase files to be read in, the format type that nll reads, the tt grid location and output dir. ##
+#LOCFILES /Users/banjo/Projects/nll_pnsn/bremerton/bremUpdated.hypo HYPOINVERSE_Y2000_ARC  ./time/test1D  ./loc/bremUP_1D
+#LOCFILES /Users/banjo/Projects/nll_pnsn/bremerton/bremUpdated.hypo HYPOINVERSE_Y2000_ARC /Volumes/huge/time/test3D ./loc/bremUP_1D
+LOCFILES /Users/banjo/Projects/nll_pnsn/5stndiff.hypo HYPOINVERSE_Y2000_ARC /Volumes/huge2/time3D/test3D ./loc/bremUP_1D
+# ========================================================================
+# =============================================================================
+# =============================================================================
+# LOCHYPOUT - Output File Types
+LOCHYPOUT SAVE_NLLOC_ALL
+# =============================================================================
+# =============================================================================
+# ========================================================================
+# LOCSEARCH - Search Type
+# required, non-repeatable
+LOCSEARCH  OCT 12 32 2  0.01 10000 1000 0 1
+#LOCSEARCH GRID 1000
+# =============================================================================
+# =============================================================================
+# ========================================================================
+# LOCGRID - Search Grid Description
+# required, repeatable
+#
+# location grids description
+# (LOCGRID  num_grid_x  num_grid_y  num_grid_z
+#       orig_grid_x  orig_grid_y  orig_grid_z
+#       d_grid_x d_grid_y d_grid_z
+#       type save_flag
+#    (float) num_grid_x/y/z : number of nodes along x/y/z axis
+#    (float)    orig_grid_x : x location of grid origin (0,0,0) in km pos east
+#    (float)    orig_grid_y : y location of grid origin (0,0,0) in km pos north
+#    (float)    orig_grid_z : z location of grid origin (0,0,0) in km pos down
+#    (float)   d_grid_x/y/x : grid spacing along  x/y/z axis
+#    (char[])  type : (PROB_DENSITY, MISFIT)
+#    (char[])  save_flag : (SAVE, NO_SAVE)
+# For Grid search, first grid is used for initial search.  Subsequent grids are
+# shifted in x/y/z so that they are centered on the minimum misfit hypocenter
+# x/y/z of the previous grid if x/y/z < -1.0e20.
+#
+LOCGRID  270  770 50  0.0 0.0 -1.0  1.0 1.0 1.0   PROB_DENSITY  SAVE
+#LOCGRID  240 240 110  0.0 0.0 -3.0  0.5 0.5 0.5   PROB_DENSITY  SAVE
+# =============================================================================
+# =============================================================================
+# ========================================================================
+# LOCMETH - Location Method
+LOCMETH EDT_OT_WT 9999.0 4 -1 -1 -1 10 -1.0 1  ### to run witht he sorted hypofile
+#LOCMETH EDT_OT_WT 9999.0 4 -1 -1 -1.78 35 -1.0 1  ### to run witht he sorted hypofile
+#LOCMETH EDT_OT_WT 9999.0 4 -1 -1 0.0 35 -1.0 -2  ## This reads all of the observations -- for BAK
+# ========================================================================
+# =============================================================================
+# =============================================================================
+# fixed origin time
+# (LOCFIXOTIME year month day hour min sec)
+#    (int)   year month day hour min
+#    (float)   sec
+#LOCFIXOTIME 1995 04 21 08 02 57.09
+#LOCFIXOTIME 2019 07 12 09 51 38.33
+# ========================================================================
+# =============================================================================
+# =============================================================================
+# LOCGAU - Gaussian Model Errors
+# required, non-repeatable
+# gaussian model error parameters
+# (LOCGAU Sigma_T (s), CorrLen (km))
+LOCGAU 0.22 0.0
+# ========================================================================
+# =============================================================================
+# =============================================================================
+# LOCGAU2 - Travel-Time Dependent Model Errors
+# optional, non-repeatable
+# travel-time dependent gaussian model error parameters
+# (LOCGAU2 SigmaTfraction,  SigmaTmin (s),  SigmaTmax (s))
+# travel time error is travel_time*SigmaTfraction, with max/min value = SigmaTmin/SigmaTmax
+#LOCGAU2 0.01 0.05 2.0
+# ========================================================================
+# =============================================================================
+# =============================================================================
+# LOCPHASEID - Phase Identifier Mapping
+# optional, repeatable
+# phase identifier mapping
+# (LOCPHASEID phase  phase_id0 phase_id1 ...)
+# examples for P and S
+#LOCPHASEID  P   P p G PN PG
+#LOCPHASEID  S   S s G SN SG
+# ========================================================================
+# =============================================================================
+# =============================================================================
+# LOCQUAL2ERR - Quality to Error Mapping
+# required, non-repeatable, for phase/observation file formats that do not
+# include time uncertainties ; ignored, non-repeatable, otherwise
+# quality to error mapping (for HYPO71, etc)
+# (LOCQUAL2ERR Err0 Err1 Err2 ... )
+# the following quality mapping is default from Hypoellipse documentation
+LOCQUAL2ERR 1.0 0.75 0.50 0.25 9999.9
+# ========================================================================
+# =============================================================================
+# =============================================================================
+# LOCANGLES - Take-off Angles parameters
+# optional, non-repeatable
+# take-off angles mode & minimum quality
+# (LOCANGLES angles_mode, min_quality)
+#    (char[])   angles_mode (ANGLES_YES, ANGLES_NO)
+#    (integer)   min_quality : minimum quality to use take-off angles
+LOCANGLES ANGLES_YES 5
+# ========================================================================
+# =============================================================================
+# =============================================================================
+#LOCSTAWT flag cutoffDist
+#LOCSTAWT 1 150
+# ========================================================================
+# =============================================================================
+# =============================================================================
+LOCPHSTAT 9999.0 -1 9999.0 1.0 1.0 9999.9 -9999.9 9999.9
+# ========================================================================
+# =============================================================================
+# =============================================================================
+# LOCDELAY - Phase Time Delays
+# optional, repeatable
+# Syntax 1: LOCDELAY code phase numReadings delay
+# Specifies P and S delays (station corrections) to be subtracted from observed P and S times.
+#    code (string) station code (after all alias evaluations)
+#    phase (string) phase type ( P or S )
+#    numReadings (integer) number of residuals used to calculate mean residual/delay (not used by NLLoc, included for compatibility with the format of a summary, phase statistics file)
+#    delay (float) delay in seconds, subtracted from observed time
+# example:
+# LOCDELAY NEGI P  1  0.04
+# example, delays read from file:
+#INCLUDE /Users/banjo/Projects/nll_pnsn/NLLoc/test/locNSC/bremUP_1D.sum.grid0.loc.stat_totcorr 
